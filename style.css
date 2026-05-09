@@ -166,3 +166,61 @@ button:hover {
     padding: 12px;
   }
 }
+
+/* AI BOX */
+
+.ai-box {
+
+  width: 90%;
+
+  max-width: 500px;
+
+  margin: 30px auto;
+
+  background: #1e293b;
+
+  border-radius: 30px;
+
+  padding: 25px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
+
+
+
+/* SIGNAL */
+
+#signal {
+
+  font-size: 50px;
+
+  margin-top: 20px;
+
+  color: #00ff99;
+}
+
+
+
+/* CONFIDENCE */
+
+#confidence {
+
+  font-size: 28px;
+
+  margin-top: 15px;
+}
+
+
+
+/* SENTIMENT */
+
+#sentiment {
+
+  font-size: 26px;
+
+  margin-top: 15px;
+
+  color: orange;
+}
