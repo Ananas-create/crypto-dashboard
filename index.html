@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>Crypto Dashboard</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- библиотека графиков -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+  <h1>Crypto Terminal 🚀</h1>
+
+  <div class="card">
+
+    <h2 id="coin-name">
+      Bitcoin
+    </h2>
+
+    <div id="price">
+      Loading...
+    </div>
+
+    <!-- кнопки -->
+    <div class="buttons">
+
+      <button onclick="changeCoin('bitcoin')">
+        BTC
+      </button>
+
+      <button onclick="changeCoin('ethereum')">
+        ETH
+      </button>
+
+      <button onclick="changeCoin('solana')">
+        SOL
+      </button>
+
+      <button onclick="changeCoin('tether')">
+        USDT
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- график -->
+  <div class="chart-box">
+
+    <canvas id="chart"></canvas>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
