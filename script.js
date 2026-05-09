@@ -1,24 +1,75 @@
-// текущая монета
+//
+// ===============================
+// CRYPTO TERMINAL 🚀
+// FULL script.js
+// ===============================
+//
+
+
+
+// -------------------------------
+// ТЕКУЩАЯ МОНЕТА
+// -------------------------------
+
 let currentCoin = "bitcoin";
 
 
-// HTML элементы
-const priceDiv = document.getElementById("price");
-
-const coinName = document.getElementById("coin-name");
 
 
-// график
-const ctx = document.getElementById("chart");
+// -------------------------------
+// HTML ЭЛЕМЕНТЫ
+// -------------------------------
+
+// цена
+const priceDiv =
+  document.getElementById("price");
 
 
-// массивы
+// название монеты
+const coinName =
+  document.getElementById("coin-name");
+
+
+// AI SIGNAL
+const signalDiv =
+  document.getElementById("signal");
+
+
+// confidence
+const confidenceDiv =
+  document.getElementById("confidence");
+
+
+// sentiment
+const sentimentDiv =
+  document.getElementById("sentiment");
+
+
+
+
+// -------------------------------
+// ГРАФИК
+// -------------------------------
+
+// canvas
+const ctx =
+  document.getElementById("chart");
+
+
+// массив времени
 const labels = [];
 
+
+// массив цен
 const prices = [];
 
 
-// создаем график
+
+
+// -------------------------------
+// СОЗДАЕМ CHART.JS
+// -------------------------------
+
 const chart = new Chart(ctx, {
 
   type: "line",
@@ -27,42 +78,66 @@ const chart = new Chart(ctx, {
 
     labels: labels,
 
-    datasets: [{
+    datasets: [
 
-      label: "Price USD",
+      {
 
-      data: prices
-    }]
+        label: "Price USD",
+
+        data: prices,
+
+        borderWidth: 3,
+
+        tension: 0.3
+      }
+    ]
+  },
+
+  options: {
+
+    responsive: true
   }
 });
 
 
 
 
-// функция загрузки цены
+// ===============================
+// ЗАГРУЗКА ЦЕНЫ
+// ===============================
+
 async function loadPrice() {
 
-  // ссылка API
+  // API URL
   const url =
     `https://api.coingecko.com/api/v3/simple/price?ids=${currentCoin}&vs_currencies=usd`;
 
 
 
-  // запрос
-  const response = await fetch(url);
+  // fetch запрос
+  const response =
+    await fetch(url);
+
+
 
   // JSON
-  const data = await response.json();
+  const data =
+    await response.json();
 
 
 
-  // цена
-  const price = data[currentCoin].usd;
+
+  // цена монеты
+  const price =
+    data[currentCoin].usd;
 
 
 
-  // показываем цену
-  priceDiv.innerHTML = "$" + price;
+
+  // отображаем цену
+  priceDiv.innerHTML =
+    "$" + price;
+
 
 
 
@@ -72,16 +147,19 @@ async function loadPrice() {
 
 
 
-  // время
+
+  // текущее время
   const time =
     new Date().toLocaleTimeString();
 
 
 
-  // добавляем данные
+
+  // добавляем данные в график
   labels.push(time);
 
   prices.push(price);
+
 
 
 
@@ -95,14 +173,96 @@ async function loadPrice() {
 
 
 
-  // обновляем chart
+
+  // обновляем график
   chart.update();
 }
 
 
 
 
-// смена монеты
+// ===============================
+// AI SIGNAL
+// ===============================
+
+async function loadSignal() {
+
+  // Python server URL
+  const url =
+    `http://127.0.0.1:8000/signal/${currentCoin}`;
+
+
+
+
+  // запрос к Python
+  const response =
+    await fetch(url);
+
+
+
+
+  // JSON
+  const data =
+    await response.json();
+
+
+
+
+  // отображаем сигнал
+  signalDiv.innerHTML =
+    `${data.signal} ${data.coin}`;
+
+
+
+
+  // confidence
+  confidenceDiv.innerHTML =
+    `Confidence: ${data.confidence}%`;
+
+
+
+
+  // sentiment
+  sentimentDiv.innerHTML =
+    `Sentiment: ${data.sentiment}`;
+
+
+
+
+
+  // цвет BUY
+  if (data.signal === "BUY") {
+
+    signalDiv.style.color =
+      "#00ff99";
+  }
+
+
+
+  // цвет SELL
+  else if (data.signal === "SELL") {
+
+    signalDiv.style.color =
+      "red";
+  }
+
+
+
+  // HOLD
+  else {
+
+    signalDiv.style.color =
+      "orange";
+  }
+}
+
+
+
+
+// ===============================
+// СМЕНА МОНЕТЫ
+// ===============================
+
 function changeCoin(coin) {
 
   // новая монета
@@ -110,24 +270,51 @@ function changeCoin(coin) {
 
 
 
-  // очищаем старые данные
+
+  // очищаем график
   labels.length = 0;
 
   prices.length = 0;
 
 
 
-  // загрузка новой монеты
+
+  // загружаем новую цену
   loadPrice();
+
+
+
+
+  // загружаем AI сигнал
+  loadSignal();
 }
 
 
+
+
+// ===============================
+// ПЕРВЫЙ ЗАПУСК
+// ===============================
 
 // первая загрузка
 loadPrice();
 
 
-// автообновление
+// AI
+loadSignal();
+
+
+
+
+// ===============================
+// АВТООБНОВЛЕНИЕ
+// ===============================
+
+// обновляем цену каждые 5 сек
 setInterval(loadPrice, 5000);
+
+
+// обновляем AI каждые 10 сек
+setInterval(loadSignal, 10000);
 
 
